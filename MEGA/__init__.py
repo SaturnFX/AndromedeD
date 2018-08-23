@@ -1,1 +1,1 @@
-from .MEGA import MEGA
+from .Account import Account

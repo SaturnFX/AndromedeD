@@ -1,5 +1,4 @@
-import json
-import random
+﻿import json
 import struct
 import base64
 import binascii
@@ -36,26 +35,6 @@ def DecryptAttribute(Attribute, Key):
     Attribute = AESDecrypt(Attribute, BytesToUTF8(Key)).rstrip(b'\0')
     Attribute = str(Attribute, "utf-8")
     return json.loads(Attribute[4:]) if Attribute[:6] == 'MEGA{"' else False
-
-def GenerateHash(InputString, HashKey):
-    StringBytes = StringToBytes(InputString)
-    Hash = [0, 0, 0, 0]
-    for Index in range(len(StringBytes)):
-        Hash[Index % 4] = Hash[Index % 4] ^ StringBytes[Index]
-    for Index in range(0x4000):
-        Hash = AESEncryptBytes(Hash, HashKey)
-    return BytesToBase64((Hash[0], Hash[2]))
-
-def PrepareKey(PasswordBytes):
-    OutputKey = [0x93C467E3, 0x7DB0C7A4, 0xD1BE3F81, 0x0152CB56]
-    for Counter in range(0x10000):
-        for Index in range(0, len(PasswordBytes), 4):
-            EncryptionKey = [0, 0, 0, 0]
-            for Offset in range(4):
-                if Offset + Index < len(PasswordBytes):
-                    EncryptionKey[Offset] = PasswordBytes[Offset + Index]
-            OutputKey = AESEncryptBytes(OutputKey, EncryptionKey)
-    return OutputKey
 
 def BytesToUTF8(Data):
     return struct.pack('>%dI' % len(Data), *Data)
@@ -95,20 +74,22 @@ def Base64URLEncode(Data):
 def BytesToBase64(Data):
     return Base64URLEncode(BytesToUTF8(Data))
 
-def get_chunks(size):
-    p = 0
-    s = 0x20000
-    while p+s < size:
-        yield(p, s)
-        p += s
-        if s < 0x100000:
-            s += 0x20000
-    yield(p, size-p)
+def GenerateHash(InputString, HashKey):
+    StringBytes = StringToBytes(InputString)
+    Hash = [0, 0, 0, 0]
+    for Index in range(len(StringBytes)):
+        Hash[Index % 4] = Hash[Index % 4] ^ StringBytes[Index]
+    for Index in range(0x4000):
+        Hash = AESEncryptBytes(Hash, HashKey)
+    return BytesToBase64((Hash[0], Hash[2]))
 
-CharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-
-def GenerateID(IDLength):
-    OutputID = ""
-    for Index in range(IDLength):
-        OutputID = OutputID + random.choice(CharacterSet)
-    return OutputID
+def PrepareKey(PasswordBytes):
+    OutputKey = [0x93C467E3, 0x7DB0C7A4, 0xD1BE3F81, 0x0152CB56]
+    for Counter in range(0x10000):
+        for Index in range(0, len(PasswordBytes), 4):
+            EncryptionKey = [0, 0, 0, 0]
+            for Offset in range(4):
+                if Offset + Index < len(PasswordBytes):
+                    EncryptionKey[Offset] = PasswordBytes[Offset + Index]
+            OutputKey = AESEncryptBytes(OutputKey, EncryptionKey)
+    return OutputKey
