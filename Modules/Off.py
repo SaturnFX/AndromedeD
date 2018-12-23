@@ -1,6 +1,6 @@
 ﻿import Command
 
-@Command.CommandFunction
+@Command.CommandFunction()
 def Command(*Arguments):
-    print(Arguments)
+    print("You've passed me:", Arguments)
     
