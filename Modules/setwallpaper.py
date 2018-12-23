@@ -9,7 +9,7 @@ import Command
 def Command(WallpaperPath, WallpaperStyle):
     print("Setting wallpaper..")
     try:
-        SetWallpaperStyle(WallpaperStyle)
+        SetWallpaperStyle(int(WallpaperStyle))
         win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, WallpaperPath, win32con.SPIF_UPDATEINIFILE)
     except pywintypes.error as Error:
         print("Could not change desktop wallpaper")
