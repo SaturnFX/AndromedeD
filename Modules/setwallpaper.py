@@ -1,9 +1,9 @@
+import Command
+
 import win32api
 import win32gui
 import win32con
 import pywintypes
-
-import Command
 
 @Command.CommandFunction()
 def Command(WallpaperPath, WallpaperStyle):
