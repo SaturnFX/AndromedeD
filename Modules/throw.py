@@ -2,8 +2,8 @@
 
 @Command.CommandFunction()
 def Command(*Arguments):
-    print("I'm throwing now!")
+	print("I'm throwing now!")
 	raise SampleError("This is the message")
-    
+	
 class SampleError(Exception):
-    pass
+	pass
