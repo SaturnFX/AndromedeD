@@ -1,9 +1,15 @@
-import Command
-
+"""
+Name: setwallpaper
+Description: Allows you to set desktop wallpaper on Microsoft Windows
+Version: 1.0
+Platform: 1
+"""
 import win32api
 import win32gui
 import win32con
 import pywintypes
+
+import Command
 
 @Command.CommandFunction()
 def Command(WallpaperPath, WallpaperStyle):
